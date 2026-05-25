@@ -27,33 +27,76 @@ class RoleSeeder extends Seeder
             );
         }
 
-        // 2. Creamos el SuperUsuario por defecto en la tabla 'usuarios'
-        $superUserEmail = 'superuser@instituto.com'; // Este será tu correo de acceso
-        
-        // Verificamos si ya existe para no duplicarlo si vuelves a correr el seeder
-        $userExists = DB::table('usuarios')->where('email', $superUserEmail)->exists();
 
-        if (!$userExists) {
-            // Buscamos el ID numérico que la base de datos le asignó al slug 'superuser'
+        // --- 👑 USUARIO 1: SUPERUSUARIO ---
+        $superUserEmail = 'superuser@instituto.com';
+        if (!DB::table('usuarios')->where('email', $superUserEmail)->exists()) {
             $superUserRolId = DB::table('roles')->where('slug', 'superuser')->value('id');
 
-            // Insertamos las credenciales de acceso en la tabla 'usuarios'
             $usuarioId = DB::table('usuarios')->insertGetId([
                 'rol_id' => $superUserRolId,
                 'email' => $superUserEmail,
-                'password' => Hash::make('AdminSecret2026*'), // Tu contraseña de acceso
+                'password' => Hash::make('AdminSecret2026*'),
                 'estado' => 'activo',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            // 3. Como separaste los datos, le creamos también su fila en la tabla 'perfiles'
             DB::table('perfiles')->insert([
                 'usuario_id' => $usuarioId,
                 'nombres' => 'Super',
                 'apellidos' => 'Usuario Maestro',
                 'tipo_documento' => 'DNI',
-                'numero_documento' => '00000000', // Un número por defecto seguro
+                'numero_documento' => '00000000',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // --- 📝 USUARIO 2: SECRETARIO ---
+        $secretaryEmail = 'secretaria@instituto.com';
+        if (!DB::table('usuarios')->where('email', $secretaryEmail)->exists()) {
+            $secretaryRolId = DB::table('roles')->where('slug', 'secretary')->value('id');
+
+            $secretaryId = DB::table('usuarios')->insertGetId([
+                'rol_id' => $secretaryRolId,
+                'email' => $secretaryEmail,
+                'password' => Hash::make('Secretary2026*'), // Contraseña segura
+                'estado' => 'activo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::table('perfiles')->insert([
+                'usuario_id' => $secretaryId,
+                'nombres' => 'Ana Maria',
+                'apellidos' => 'Palacios Quiroz',
+                'tipo_documento' => 'DNI',
+                'numero_documento' => '77777777',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        $studentEmail = 'alumno@instituto.com';
+        if (!DB::table('usuarios')->where('email', $studentEmail)->exists()) {
+            $studentRolId = DB::table('roles')->where('slug', 'student')->value('id');
+
+            $studentId = DB::table('usuarios')->insertGetId([
+                'rol_id' => $studentRolId,
+                'email' => $studentEmail,
+                'password' => Hash::make('Alumno2026*'), 
+                'estado' => 'activo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::table('perfiles')->insert([
+                'usuario_id' => $studentId,
+                'nombres' => 'Alexander Bryan',
+                'apellidos' => 'Piélago Quiroz',
+                'tipo_documento' => 'DNI',
+                'numero_documento' => '99999999',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

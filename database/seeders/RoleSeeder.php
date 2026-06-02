@@ -53,6 +53,31 @@ class RoleSeeder extends Seeder
             ]);
         }
 
+        // --- 🎓 USUARIO 2: PROFESOR ---
+        $teacherEmail = 'profesor@instituto.com';
+        if (!DB::table('usuarios')->where('email', $teacherEmail)->exists()) {
+            $teacherRolId = DB::table('roles')->where('slug', 'teacher')->value('id');
+
+            $teacherId = DB::table('usuarios')->insertGetId([
+                'rol_id' => $teacherRolId,
+                'email' => $teacherEmail,
+                'password' => Hash::make('Profesor2026*'), // Contraseña segura
+                'estado' => 'activo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::table('perfiles')->insert([
+                'usuario_id' => $teacherId,
+                'nombres' => 'Carlos Alberto',
+                'apellidos' => 'Mendoza Vargas',
+                'tipo_documento' => 'DNI',
+                'numero_documento' => '88888888',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
         // --- 📝 USUARIO 2: SECRETARIO ---
         $secretaryEmail = 'secretaria@instituto.com';
         if (!DB::table('usuarios')->where('email', $secretaryEmail)->exists()) {

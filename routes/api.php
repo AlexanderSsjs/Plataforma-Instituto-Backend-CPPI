@@ -1,13 +1,19 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Agent\ChatbotController;
+
 // 🏢 IMPORTACIÓN OBLIGATORIA: Apunta al nuevo controlador que creamos en la subcarpeta Api
 use App\Http\Controllers\Api\AlumnoController; 
 use Illuminate\Support\Facades\Route;
 
+// 🔒 RUTAS PROTEGIDAS GLOBALMENTE: Solo accesibles si React envía un 'Bearer Token' válido
+
 // 🔓 RUTAS PÚBLICAS: Cualquier usuario o invitado de React puede acceder a ellas
 Route::post('/login', [AuthController::class, 'login']);
 
+
+Route::post('/chat', [ChatbotController::class, 'procesarMensaje']);
 
 // 🔒 RUTAS PROTEGIDAS GLOBALMENTE: Solo accesibles si React envía un 'Bearer Token' válido
 Route::middleware('auth:sanctum')->group(function () {

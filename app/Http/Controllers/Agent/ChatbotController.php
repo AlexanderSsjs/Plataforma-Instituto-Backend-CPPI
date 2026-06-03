@@ -19,17 +19,9 @@ class ChatbotController extends Controller
         $mensajeUsuario = trim($request->mensaje);
         $historial = $request->input('historial', []);
 
-        // LOG 1: Verificar qué está recibiendo del frontend
-        Log::info('--- NUEVO MENSAJE RECIBIDO ---', [
-            'mensaje' => $mensajeUsuario,
-            'cantidad_historial' => count($historial)
-        ]);
-
-        // 1. Apuntamos a la ruta física y absoluta de los archivos
         $rutaReglas = storage_path('app/data/reglas_agente.txt');
         $rutaInfo = storage_path('app/data/informacion.txt');
 
-        // 2. Usamos file_exists y file_get_contents nativos de PHP
         $reglas = file_exists($rutaReglas) ? file_get_contents($rutaReglas) : '';
         $informacion = file_exists($rutaInfo) ? file_get_contents($rutaInfo) : '';
 

@@ -14,18 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        
-        // 🔒 1. REGISTRO DEL MIDDLEWARE DE ROLES
+        $middleware->validateCsrfTokens(except: [
+            'api/transcribe',
+            'api/chat',
+        ]);
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
-
-        // 🌐 2. OPTIMIZACIÓN STATEFUL PARA REVERSIÓN DE COOKIES/CORS (Sanctum)
         $middleware->statefulApi();
-
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
@@ -34,5 +32,4 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 401);
             }
         });
-
     })->create();

@@ -25,17 +25,14 @@ class ChatbotController extends Controller
         $reglas = file_exists($rutaReglas) ? file_get_contents($rutaReglas) : '';
         $informacion = file_exists($rutaInfo) ? file_get_contents($rutaInfo) : '';
 
-        // 3. Log para verificar (Opcional, pero útil)
         Log::info('VERIFICACIÓN NATIVA DE PHP', [
             'ruta_info' => $rutaInfo,
             'existe_info_php' => file_exists($rutaInfo),
         ]);
-        // LOG 3: Ver cuánto texto extrajo realmente (en caracteres)
         Log::info('TXT CARGADOS', [
             'reglas_length' => strlen($reglas),
             'informacion_length' => strlen($informacion),
         ]);
-
         $baseSystem = "
         Eres el asistente virtual oficial de Ingeniería Líder.
 
